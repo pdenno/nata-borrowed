@@ -1,0 +1,51 @@
+{
+  "name": "nata-borrowed",
+  "version": "1.0.2",
+  "description": "Things borrowed from JSONata that I'd use in the JS version of RADmapper",
+  "module": "nata-borrowed.js",
+  "main": "nata-borrowed.js",
+  "scripts": {
+    "test": "npm run mocha",
+    "pretest": "npm run lint",
+    "mocha": "nyc ./node_modules/mocha/bin/_mocha -- \"test/**/*.js\"",
+    "posttest": "npm run check-coverage && npm run browserify && npm run minify && npm run build-es5",
+    "build-es5": "npm run mkdir-dist && npm run regenerator && npm run browserify-es5 && npm run minify-es5",
+    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "browserify": "browserify src/core.js --outfile index.js",
+    "mkdir-dist": "mkdirp ./dist",
+    "regenerator": "babel src --out-dir dist --presets=@babel/env",
+    "browserify-es5": "regenerator --include-runtime polyfill.js > jsonata-es5.js; browserify dist/jsonata.js --standalone jsonata >> jsonata-es5.js",
+    "prepublishOnly": "npm run browserify && npm run minify && npm run build-es5",
+    "lint": "eslint src --fix",
+    "doc": "jsdoc --configure jsdoc.json .",
+    "cover": "nyc _mocha",
+    "minify": "uglifyjs jsonata.js -o jsonata.min.js --compress --mangle",
+    "minify-es5": "uglifyjs jsonata-es5.js -o jsonata-es5.min.js --compress --mangle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdenno/nata-borrowed.git"
+  },
+  "keywords": [
+    "RADmapper",
+    "JSONata",
+    "datetime",
+    "functions",
+    "encoding",
+    "functions"
+  ],
+  "author": "Peter Denno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdenno/nata-borrowed/issues"
+  },
+  "homepage": "https://github.com/pdenno/nata-borrowed#readme",
+  "devDependencies": {
+    "eslint": "^8.27.0",
+    "eslint-plugin-ideal": "^0.1.3",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "dependencies": {
+    "uglify-js": "^3.17.4"
+  }
+}
