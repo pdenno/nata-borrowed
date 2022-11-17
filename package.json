@@ -1,9 +1,9 @@
 {
   "name": "nata-borrowed",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Things borrowed from JSONata that I'd use in the JS version of RADmapper",
-  "module": "nata-borrowed.js",
-  "main": "nata-borrowed.js",
+  "module": "nataBorrowed.js",
+  "main": "nataBorrowed.js",
   "scripts": {
     "test": "npm run mocha",
     "pretest": "npm run lint",
@@ -40,6 +40,7 @@
     "url": "https://github.com/pdenno/nata-borrowed/issues"
   },
   "homepage": "https://github.com/pdenno/nata-borrowed#readme",
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.2",
