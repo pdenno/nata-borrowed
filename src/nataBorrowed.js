@@ -17,7 +17,6 @@ const nataBorrowed = (() => {
     var formatInteger = dateTime.formatInteger;
     var round = dateTime.round;
     var fromMillis = dateTime.fromMillis;
-    var millis = dateTime.millis;
     var toMillis = dateTime.toMillis;
 
     /**
@@ -84,51 +83,6 @@ const nataBorrowed = (() => {
 	}
 
 	return result;
-    }
-
-    /**
-     * Base64 encode a string
-     * @param {String} str - string
-     * @returns {String} Base 64 encoding of the binary data
-     */
-    function base64encode(str) {
-	// undefined inputs always return undefined
-	if (typeof str === 'undefined') {
-	    return undefined;
-	}
-	// Use btoa in a browser, or Buffer in Node.js
-
-	var btoa = typeof window !== 'undefined' ?
-	    /* istanbul ignore next */ window.btoa :
-	    function (str) {
-		// Simply doing `new Buffer` at this point causes Browserify to pull
-		// in the entire Buffer browser library, which is large and unnecessary.
-		// Using `global.Buffer` defeats this.
-		return new global.Buffer.from(str, 'binary').toString('base64'); // eslint-disable-line new-cap
-	    };
-	return btoa(str);
-    }
-
-    /**
-     * Base64 decode a string
-     * @param {String} str - string
-     * @returns {String} Base 64 encoding of the binary data
-     */
-    function base64decode(str) {
-	// undefined inputs always return undefined
-	if (typeof str === 'undefined') {
-	    return undefined;
-	}
-	// Use btoa in a browser, or Buffer in Node.js
-	var atob = typeof window !== 'undefined' ?
-	    /* istanbul ignore next */ window.atob :
-	    function (str) {
-		// Simply doing `new Buffer` at this point causes Browserify to pull
-		// in the entire Buffer browser library, which is large and unnecessary.
-		// Using `global.Buffer` defeats this.
-		return new global.Buffer.from(str, 'base64').toString('binary'); // eslint-disable-line new-cap
-	    };
-	return atob(str);
     }
 
     /**
@@ -520,17 +474,12 @@ const nataBorrowed = (() => {
 	return stringValue;
     }
 
-    // I don't see "now" in the functions file.
-    return {
-	base64encode,
-	base64decode,
-	match,
-	formatNumber,
-	formatInteger,
-	round,
-	fromMillis,
-	millis,
-	toMillis
+    return { match,
+	     formatNumber,
+	     formatInteger,
+	     round,
+	     fromMillis,
+	     toMillis
     };
 })();
 
