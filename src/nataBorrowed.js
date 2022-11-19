@@ -15,7 +15,6 @@ const nataBorrowed = (() => {
     var isPromise = utils.isPromise;
 
     var formatInteger = dateTime.formatInteger;
-    var round = dateTime.round;
     var fromMillis = dateTime.fromMillis;
     var toMillis = dateTime.toMillis;
 
@@ -473,6 +472,52 @@ const nataBorrowed = (() => {
 	stringValue = pic.prefix + stringValue + pic.suffix;
 	return stringValue;
     }
+
+     /**
+     * Round to half even
+     * @param {Number} arg - Argument
+     * @param {Number} [precision] - number of decimal places
+     * @returns {Number} rounded integer
+     */
+    function round(arg, precision) {
+        var result;
+
+        // undefined inputs always return undefined
+        if (typeof arg === 'undefined') {
+            return undefined;
+        }
+
+        if (precision) {
+            // shift the decimal place - this needs to be done in a string since multiplying
+            // by a power of ten can introduce floating point precision errors which mess up
+            // this rounding algorithm - See 'Decimal rounding' in
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round
+            // Shift
+            var value = arg.toString().split('e');
+            arg = +(value[0] + 'e' + (value[1] ? (+value[1] + precision) : precision));
+
+        }
+
+        // round up to nearest int
+        result = Math.round(arg);
+        var diff = result - arg;
+        if (Math.abs(diff) === 0.5 && Math.abs(result % 2) === 1) {
+            // rounded the wrong way - adjust to nearest even number
+            result = result - 1;
+        }
+        if (precision) {
+            // Shift back
+            value = result.toString().split('e');
+            /* istanbul ignore next */
+            result = +(value[0] + 'e' + (value[1] ? (+value[1] - precision) : -precision));
+        }
+        if (Object.is(result, -0)) { // ESLint rule 'no-compare-neg-zero' suggests this way
+            // JSON doesn't do -0
+            result = 0;
+        }
+        return result;
+    }
+
 
     return { match,
 	     formatNumber,
